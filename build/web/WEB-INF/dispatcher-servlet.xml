@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- was: <?xml version="1.0" encoding="UTF-8"?> -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
+
+    <!--
+    Most controllers will use the ControllerClassNameHandlerMapping above, but
+    for the index controller we are using ParameterizableViewController, so we must
+    define an explicit mapping for it.
+    -->
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="index.htm">indexController</prop>
+                <prop key="autor.htm">autorControlador</prop>
+                <prop key="addAutor.htm">autorControlador</prop>
+                <prop key="editAutor.htm">autorControlador</prop>
+                <prop key="deleteAutor.htm">autorControlador</prop>
+                
+                
+                <prop key="editorial.htm">editorialControlador</prop>
+                <prop key="addEditorial.htm">editorialControlador</prop>
+                <prop key="editEditorial.htm">editorialControlador</prop>
+                <prop key="deleteEditorial.htm">editorialControlador</prop>
+                
+                <prop key="home.htm">homeController</prop>
+                <prop key="add.htm">homeController</prop>
+                <prop key="edit.htm">homeController</prop>
+                <prop key="delete.htm">homeController</prop>
+                
+                <prop key="categoria.htm">categoriaControlador</prop>
+                <prop key="addCategoria.htm">categoriaControlador</prop>
+                <prop key="editCategoria.htm">categoriaControlador</prop>
+                <prop key="deleteCategoria.htm">categoriaControlador</prop>
+                
+                <prop key="CargarCatalogo.htm">CargarCatalogoControlador</prop>
+                <prop key="anadirCatalogo.htm">CargarCatalogoControlador</prop>
+                <prop key="editarCatalogo.htm">CargarCatalogoControlador</prop>
+                <prop key="eliminarCatalogo.htm">CargarCatalogoControlador</prop>
+                <prop key="VerCatalogos.htm">CargarCatalogoControlador</prop>
+
+                <prop key="VerCatalogoDescargable.htm">VerCatalogoDescargableController</prop>
+                
+                <prop key="Articulo.htm">addArticuloControlador</prop>
+                <prop key="aniadirArticulo.htm">addArticuloControlador</prop>
+                <prop key="editarArticulo.htm">addArticuloControlador</prop>
+                <prop key="eliminarArticulo.htm">addArticuloControlador</prop>
+                <prop key="VerArticulos.htm">addArticuloControlador</prop>
+                <prop key="VistaDetalladaArticulo.htm">VistaDetalladaArticulo</prop>
+                
+              
+                
+                <prop key="Carrito.htm">CarritoControlador</prop>
+                <prop key="Admin.htm">AdminControlador</prop>
+                
+            </props>
+        </property>
+    </bean>
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:prefix="/WEB-INF/jsp/"
+          p:suffix=".jsp" />
+
+    <!--
+    The index controller.
+    -->
+    <bean name="autorControlador" class="controladores.AutorControlador" />
+    
+    <bean name="editorialControlador" class="controladores.EditorialControlador" />
+    
+    
+    <bean name="homeController" class="controladores.HomeController" />
+
+    
+    <bean name="categoriaControlador" class="controladores.CategoriaControlador" />
+    
+    <bean name="CargarCatalogoControlador" class="controladores.CargarCatalogoControlador" />
+    <bean name="VerCatalogoDescargableController" class="controladores.VerCatalogoDescargableController" />
+    
+    <bean name="addArticuloControlador" class="controladores.ArticuloControlador" />
+    
+    <bean name="VistaDetalladaArticulo" class="controladores.VistaDetalladaArticulo" />
+
+    <bean name="Prueba" class="controladores.Prueba" />
+    <bean name="preueba2" class="controladores.preueba2" />
+
+    <bean name="CarritoControlador" class="controladores.CarritoControlador" />
+    
+    <bean name="AdminControlador" class="controladores.AdminControlador" />
+    
+    <bean name="indexController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="index" />
+
+</beans>
+
