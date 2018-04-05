@@ -31,6 +31,7 @@ public class DAOArticulo {
 
     /**
      * Este metodo captura todos los articulos en forma descendente
+     *
      * @return retorna una lista con todos los Articulos
      */
     public List<Articulo> seleccionarArticulo() {
@@ -40,12 +41,27 @@ public class DAOArticulo {
     }
 
     /**
-     * Este metodo selecciona de los articulos el titulo el precio 
-     * la foto el IdArticulo y el ISBN de la base de datos
-     * @return retorna la lista de todos los articulos con los datos mencionados anteriormente
+     * Este metodo selecciona de los articulos el titulo, el precio, la foto, el
+     * IdArticulo y el ISBN de la base de datos
+     * 
+     * @param recomendado esta variable me difine si retorna todos los articulos o
+     * los articulos recomendados
+     * 
+     * @return retorna la lista de todos los articulos o de los articulos recomendados
+     * con los datos mencionados anteriormente
      */
-    public List<Articulo> seleccionarArticulosVistaDetallada() {
-        String sql = "select titulo,precio,foto,idArticulo,ISBN from articulo order by idArticulo asc";
+    public List<Articulo> seleccionarArticulosVistaDetallada(boolean recomendado) {
+        String sql="";
+        if (!recomendado) {
+           sql = "select titulo,precio,foto,idArticulo,ISBN from articulo order by idArticulo asc";
+        } else {
+           sql = "select DISTINCT a.titulo,a.precio,a.foto,a.idArticulo,ISBN \n" +
+                          "from articulo a inner join ventaproducto vp \n" +
+                          "on vp.idProducto=a.idArticulo \n" +
+                          "GROUP by vp.cantidad \n" +
+                          "order by idArticulo asc";
+        }
+        //select DISTINCT a.titulo,a.precio,a.foto,a.idArticulo,a.ISBN from articulo a inner join ventaproducto vp on vp.idProducto=a.idArticulo GROUP by a.titulo order by count(a.titulo) DESC
         List<Articulo> a = this.jdbcTemplate.query(sql, new RowMapper<Articulo>() {
             @Override
             public Articulo mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -64,9 +80,10 @@ public class DAOArticulo {
     }
 
     /**
-     * este metodo guarda un Articulo en la base de datos 
+     * este metodo guarda un Articulo en la base de datos
+     *
      * @param a Articulo que se quiere guardar en la base de datos
-     * @return 
+     * @return
      */
     public int guardarArticulo(Articulo a) {
         return jdbcTemplate.update("insert into articulo (editorial,autor,categoria,titulo,precio,cantidad,calificacion,"
@@ -89,21 +106,25 @@ public class DAOArticulo {
         );
 
     }
+
     /**
      * Elimina un articulo de la base de datos
+     *
      * @param id captura el id del articulo
-     * @return 
+     * @return
      */
     public int eliminaArticulo(int id) {
         return jdbcTemplate.update("delete from Articulo "
                 + "where "
                 + "idArticulo=?;", id);
     }
+
     /**
      * Modifica la informacion del articulo
+     *
      * @param a Informacion del articulo
      * @param id id del articulo que se quiere modificar
-     * @return 
+     * @return
      */
     public int editarArticulo(Articulo a, int id) {
         return jdbcTemplate.update("update Articulo "
@@ -142,6 +163,7 @@ public class DAOArticulo {
 
     /**
      * Este metodo captura un articulo de la base de datos
+     *
      * @param id id del articulo que se desea capturar la informacion
      * @return articulo que se ha consultado en la base de datos
      */
