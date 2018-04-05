@@ -59,11 +59,18 @@ public class ArticuloControlador {
 
     @RequestMapping(value = "VerArticulos.htm", method = RequestMethod.GET)
     public ModelAndView home1() {
+        boolean recomendados= false;
         ModelAndView mav = new ModelAndView();
-        List<Articulo> datos = this.daoar.seleccionarArticulosVistaDetallada();
+        List<Articulo> datos = this.daoar.seleccionarArticulosVistaDetallada(recomendados);
         List<String> codigosImagenes = codificarImagenes(datos);
+        recomendados=true;
+        List<Articulo> datos2 = this.daoar.seleccionarArticulosVistaDetallada(recomendados);
+        List<String> codigosImagenes2 = codificarImagenes(datos2);
+        
         mav.addObject("datos", datos);
         mav.addObject("imagenes", codigosImagenes);
+        mav.addObject("datos2", datos2);
+        mav.addObject("imagenes2", codigosImagenes2);
         mav.setViewName("VerArticulos");
         return mav;
     }    
