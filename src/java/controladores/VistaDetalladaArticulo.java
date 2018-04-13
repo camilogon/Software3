@@ -35,7 +35,6 @@ public class VistaDetalladaArticulo {
         daoCategoria = new DAOCategoria();
     }
 
-    
     @RequestMapping("VistaDetalladaArticulo.htm")
     public ModelAndView home(HttpServletRequest request) {
         int idArt = Integer.parseInt(request.getParameter("id"));
@@ -44,12 +43,20 @@ public class VistaDetalladaArticulo {
         ar.setEditorial(daoEditorial.seleccionarEditorial(Integer.parseInt(ar.getEditorial())).getNombre());
         ar.setCategoria(daoCategoria.SeleccionarCategoria(Integer.parseInt(ar.getCategoria())).getNombre());
         ar.setIdArticulo(idArt);
-        ModelAndView mav = new ModelAndView();
         String imgn = Base64.encode(ar.getFoto());
+        return MapeoVistaDetalladaArticulo(ar, imgn);
+    }
+    /***
+     * 
+     * @param ar articulo
+     * @param imgn
+     * @return 
+     */
+    public ModelAndView MapeoVistaDetalladaArticulo(Articulo ar, String imgn) {
+        ModelAndView mav = new ModelAndView();
         mav.addObject("articulo", ar);
         mav.addObject("imagen", imgn);
         mav.setViewName("VistaDetalladaArticulo");
         return mav;
     }
-
 }

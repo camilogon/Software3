@@ -87,7 +87,6 @@ public class AutorControlador {
         Autor datos = this.selectUsuario(id);
         mav.setViewName("editAutor");
         mav.addObject("autor", new Autor(id, datos.getNombre(), datos.getDescripcion(), datos.getRecomendado()));
-
         return mav;
     }
 

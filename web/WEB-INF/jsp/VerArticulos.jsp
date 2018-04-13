@@ -102,23 +102,28 @@
                 <div class="container">
                     <h1>Recomendados</h1>
                     <div class="row">
-                        <c:forEach var="i" begin="0" end="${fn:length(datos2)-1}">
-                            <div class="col-lg-3 col-md-12">
-                                <a href="<c:url value="VistaDetalladaArticulo.htm?id=${datos2.get(i).idArticulo}"/>">
-                                <!--<img src="<c:out value="${datos2.get(i).foto}" />" alt="Thumbnail Image" class="rounded img-raised img-responsive" width='50%' height='50%'>-->
-                                    <img src="data:image/jpg;base64,<c:out value="${imagenes2.get(i)}" />" alt="Thumbnail Image" class="rounded img-raised img-responsive" width='50%' height='50%'>
-                                </a>
-                                <p>
-                                <h6> <c:out value="${datos2.get(i).titulo}"/></h6>
-                                <p>
-                                <h5>$ <c:out value="${datos2.get(i).precio}"/></h5>
-                            </div>
-                        </c:forEach>
+                        <c:choose>
+                            <c:when test="${fn:length(datos2)-1>=0}">
+                                <c:forEach var="i" begin="0" end="${fn:length(datos2)-1}">
+                                    <div class="col-lg-3 col-md-12">
+                                        <a href="<c:url value="VistaDetalladaArticulo.htm?id=${datos2.get(i).idArticulo}"/>">
+                                        <!--<img src="<c:out value="${datos2.get(i).foto}" />" alt="Thumbnail Image" class="rounded img-raised img-responsive" width='50%' height='50%'>-->
+                                            <img src="data:image/jpg;base64,<c:out value="${imagenes2.get(i)}" />" alt="Thumbnail Image" class="rounded img-raised img-responsive" width='50%' height='50%'>
+                                        </a>
+                                        <p>
+                                        <h6> <c:out value="${datos2.get(i).titulo}"/></h6>
+                                        <p>
+                                        <h5>$ <c:out value="${datos2.get(i).precio}"/></h5>
+                                    </div>
+                                </c:forEach>
+                            </c:when>
+                        </c:choose>
+
                     </div>         
                 </div>
             </div>      
         </div>
-        
+
         <div class="wrapper ">  
             <div class="page-header clear-filter" filter-color="blue">
                 <div class="page-header-image" data-parallax="true">
@@ -127,18 +132,22 @@
                 <div class="container">
                     <h1>Productos</h1>
                     <div class="row">
-                        <c:forEach var="i" begin="0" end="${fn:length(datos)-1}">
-                            <div class="col-lg-3 col-md-12">
-                                <a href="<c:url value="VistaDetalladaArticulo.htm?id=${datos.get(i).idArticulo}"/>">
-                                <!--<img src="<c:out value="${datos.get(i).foto}" />" alt="Thumbnail Image" class="rounded img-raised img-responsive" width='50%' height='50%'>-->
-                                    <img src="data:image/jpg;base64,<c:out value="${imagenes.get(i)}" />" alt="Thumbnail Image" class="rounded img-raised img-responsive" width='50%' height='50%'>
-                                </a>
-                                <p>
-                                <h6> <c:out value="${datos.get(i).titulo}"/></h6>
-                                <p>
-                                <h5>$ <c:out value="${datos.get(i).precio}"/></h5>
-                            </div>
-                        </c:forEach>
+                        <c:choose>
+                            <c:when test="${fn:length(datos)-1>=0}">
+                                <c:forEach var="i" begin="0" end="${fn:length(datos)-1}">
+                                    <div class="col-lg-3 col-md-12">
+                                        <a href="<c:url value="VistaDetalladaArticulo.htm?id=${datos.get(i).idArticulo}"/>">
+                                        <!--<img src="<c:out value="${datos.get(i).foto}" />" alt="Thumbnail Image" class="rounded img-raised img-responsive" width='50%' height='50%'>-->
+                                            <img src="data:image/jpg;base64,<c:out value="${imagenes.get(i)}" />" alt="Thumbnail Image" class="rounded img-raised img-responsive" width='50%' height='50%'>
+                                        </a>
+                                        <p>
+                                        <h6> <c:out value="${datos.get(i).titulo}"/></h6>
+                                        <p>
+                                        <h5>$ <c:out value="${datos.get(i).precio}"/></h5>
+                                    </div>
+                                </c:forEach>
+                            </c:when>
+                        </c:choose>
                     </div>         
                 </div>
             </div>      

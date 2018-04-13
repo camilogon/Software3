@@ -9,6 +9,7 @@ import conexion.conexion;
 import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import modelos.Articulo;
 import org.springframework.dao.DataAccessException;
@@ -43,24 +44,16 @@ public class DAOArticulo {
     /**
      * Este metodo selecciona de los articulos el titulo, el precio, la foto, el
      * IdArticulo y el ISBN de la base de datos
-     * 
-     * @param recomendado esta variable me difine si retorna todos los articulos o
-     * los articulos recomendados
-     * 
-     * @return retorna la lista de todos los articulos o de los articulos recomendados
-     * con los datos mencionados anteriormente
+     *
+     * @param recomendado esta variable me difine si retorna todos los articulos
+     * o los articulos recomendados
+     *
+     * @return retorna la lista de todos los articulos o de los articulos
+     * recomendados con los datos mencionados anteriormente
      */
     public List<Articulo> seleccionarArticulosVistaDetallada(boolean recomendado) {
-        String sql="";
-        if (!recomendado) {
-           sql = "select titulo,precio,foto,idArticulo,ISBN from articulo order by idArticulo asc";
-        } else {
-           sql = "select DISTINCT a.titulo,a.precio,a.foto,a.idArticulo,ISBN \n" +
-                          "from articulo a inner join ventaproducto vp \n" +
-                          "on vp.idProducto=a.idArticulo \n" +
-                          "GROUP by vp.cantidad \n" +
-                          "order by idArticulo asc";
-        }
+        String sql = "";
+        sql = SeleccionarSqlArticulos(recomendado);
         //select DISTINCT a.titulo,a.precio,a.foto,a.idArticulo,a.ISBN from articulo a inner join ventaproducto vp on vp.idProducto=a.idArticulo GROUP by a.titulo order by count(a.titulo) DESC
         List<Articulo> a = this.jdbcTemplate.query(sql, new RowMapper<Articulo>() {
             @Override
@@ -74,9 +67,30 @@ public class DAOArticulo {
                 return ar;
             }
         });
-//     
-
         return a;
+    }
+
+    /**
+     * Este metodo selecciona la cosutan resectiva para todos los articulos si
+     * decomendado es falso y si erecomndado es verdadero retorna los articulos
+     * recomendados por ventas
+     *
+     * @param recomendado esta vairable sirve para ver que consulta utilizar
+     * @return
+     */
+
+    public String SeleccionarSqlArticulos(boolean recomendado) {
+        String sql = "";
+        if (!recomendado) {
+            sql = "select titulo,precio,foto,idArticulo,ISBN from articulo order by idArticulo asc";
+        } else {
+            sql = "select DISTINCT a.titulo,a.precio,a.foto,a.idArticulo,ISBN \n"
+                    + "from articulo a inner join ventaproducto vp \n"
+                    + "on vp.idProducto=a.idArticulo \n"
+                    + "GROUP by vp.cantidad \n"
+                    + "order by idArticulo asc";
+        }
+        return sql;
     }
 
     /**
