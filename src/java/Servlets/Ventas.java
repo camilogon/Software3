@@ -36,22 +36,22 @@ public class Ventas extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        DAOArticulo daoart = new DAOArticulo();
-        DAOVentas daoven = new DAOVentas();
+        DAOArticulo daoarticulo = new DAOArticulo();
+        DAOVentas daoventas = new DAOVentas();
         int total = 0;
         HttpSession sesion = request.getSession(true);
         LinkedList<ArticuloCarrito> articulosCarrito = sesion.getAttribute("carrito") == null ? null : (LinkedList<ArticuloCarrito>) sesion.getAttribute("carrito");
         if (articulosCarrito != null) {
             for (ArticuloCarrito ac : articulosCarrito) {
-                Articulo ar = daoart.seleccionarArticulo(ac.getIdArticulo());
+                Articulo ar = daoarticulo.seleccionarArticulo(ac.getIdArticulo());
                 total = total + (ac.getCantidad() * ar.getPrecio());
             }
 
-            daoven.guardarVenta(1, total);
+            daoventas.guardarVenta(1, total);
 
             for (ArticuloCarrito ac : articulosCarrito) {
-                Articulo ar = daoart.seleccionarArticulo(ac.getIdArticulo());
-                daoven.guardarVentaCantidad(daoven.selectMaxIdVentas(), ac.getIdArticulo(), ac.getCantidad());
+                Articulo ar = daoarticulo.seleccionarArticulo(ac.getIdArticulo());
+                daoventas.guardarVentaCantidad(daoventas.selectMaxIdVentas(), ac.getIdArticulo(), ac.getCantidad());
             }
             articulosCarrito.removeAll(articulosCarrito);
         }
