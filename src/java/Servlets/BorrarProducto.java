@@ -6,7 +6,6 @@
 package Servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.LinkedList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,26 +21,27 @@ import modelos.ArticuloCarrito;
 public class BorrarProducto extends HttpServlet {
 
     /**
-     * Procesa peticiones de metodos  HTTP <code>GET</code> y <code>POST</code>
-     * 
+     * Procesa peticiones de metodos HTTP <code>GET</code> y <code>POST</code>
+     *
      *
      * @param request peticion del servlet
      * @param response respuesta del servlet
      * @throws ServletException si ocurre un error con el servlet
      * @throws IOException si ocurre un error de I/O
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String id = request.getParameter("idArticulo");
-        int idArticulo = Integer.parseInt(id);
+        final String idEntrante = request.getParameter("idArticulo");
+        final int idArticulo = Integer.parseInt(idEntrante);
         //idArticulo++;
-        HttpSession sesion = request.getSession(true);
-        LinkedList<ArticuloCarrito> articulosCarrito = sesion.getAttribute("carrito") == null ? null : (LinkedList<ArticuloCarrito>) sesion.getAttribute("carrito");
+        final HttpSession sesion = request.getSession(true);
+        final LinkedList<ArticuloCarrito> articulosCarrito = sesion.getAttribute("carrito") == null ? null
+                : (LinkedList<ArticuloCarrito>) sesion.getAttribute("carrito");
         if (articulosCarrito != null) {
-            for (ArticuloCarrito ac : articulosCarrito) {
-                if (ac.getIdArticulo() == idArticulo) {
-                    articulosCarrito.remove(ac);
+            for (final ArticuloCarrito i : articulosCarrito) {
+                if (i.getIdArticulo() == idArticulo) {
+                    articulosCarrito.remove(i);
                     break;
                 }
             }
