@@ -22,36 +22,21 @@ public class AgregarProducto extends HttpServlet {
 
     /**
      * Procesa peticiones de metodos HTTP <code>GET</code> y <code>POST</code>
-     *
      * @param request peticion del servlet
      * @param response respuesta del servlet
      * @throws ServletException si ocurre un error con el servlet
      * @throws IOException si ocurre un error de I/O
      */
-    protected void processRequest(final HttpServletRequest request, final HttpServletResponse response)
+    protected void processRequest(final HttpServletRequest request,final HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         final int cantidad = Integer.parseInt(request.getParameter("cantidad"));
         final int idArticulo = Integer.parseInt(request.getParameter("idArticulo"));
         final HttpSession sesion = request.getSession(true);
-        final LinkedList<ArticuloCarrito> articulosCarrito = sesion.getAttribute("carrito") == null
-                ? new LinkedList<ArticuloCarrito>() : (LinkedList<ArticuloCarrito>) sesion.getAttribute("carrito");
-        añadirArticulosCarrito(articulosCarrito, idArticulo, cantidad);
-        sesion.setAttribute("carrito", articulosCarrito);
-        response.sendRedirect("Carrito.htm");
-
-    }
-
-    /*
-     * @param articulosCarrito lista de articulos que hay en el carrito
-     * @param idArticulo articulo para agregar 
-     *@param cantidad numero de articulos
-     */
-    public void añadirArticulosCarrito(final LinkedList<ArticuloCarrito> articulosCarrito, int idArticulo, int cantidad) {
+        final LinkedList<ArticuloCarrito> articulosCarrito = sesion.getAttribute("carrito") == null ? new LinkedList<ArticuloCarrito>() : (LinkedList<ArticuloCarrito>) sesion.getAttribute("carrito");
         boolean bandera = false;
         if (articulosCarrito.size() > 0) {
             for (final ArticuloCarrito articuloC : articulosCarrito) {
-
                 if (idArticulo == articuloC.getIdArticulo()) {
                     articuloC.setCantidad(articuloC.getCantidad() + cantidad);
                     bandera = true;
@@ -63,8 +48,12 @@ public class AgregarProducto extends HttpServlet {
         if (!bandera) {
             articulosCarrito.add(new ArticuloCarrito(idArticulo, cantidad));
         }
+        sesion.setAttribute("carrito", articulosCarrito);
+        response.sendRedirect("Carrito.htm");
+
     }
 
+  
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -74,7 +63,7 @@ public class AgregarProducto extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
+    protected void doGet( final HttpServletRequest request,final  HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -88,7 +77,7 @@ public class AgregarProducto extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
+    protected void doPost( final HttpServletRequest request,final  HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }

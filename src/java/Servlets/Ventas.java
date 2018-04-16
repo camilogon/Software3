@@ -8,6 +8,7 @@ package Servlets;
 import DAOs.DAOArticulo;
 import DAOs.DAOVentas;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,38 +24,41 @@ import modelos.ArticuloCarrito;
  */
 public class Ventas extends HttpServlet {
 
-    /** Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-       @param request servlet request
+     *
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(final HttpServletRequest request, final HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        final DAOArticulo daoarticulo = new DAOArticulo();
-        final DAOVentas daoventas = new DAOVentas();
+        DAOArticulo daoart = new DAOArticulo();
+        DAOVentas daoven = new DAOVentas();
         int total = 0;
-        final HttpSession sesion = request.getSession(true);
-        final LinkedList<ArticuloCarrito> articulosCarrito = sesion.getAttribute("carrito") == null ? null : (LinkedList<ArticuloCarrito>) sesion.getAttribute("carrito");
+        HttpSession sesion = request.getSession(true);
+        LinkedList<ArticuloCarrito> articulosCarrito = sesion.getAttribute("carrito") == null ? null : (LinkedList<ArticuloCarrito>) sesion.getAttribute("carrito");
         if (articulosCarrito != null) {
-            for (final ArticuloCarrito ac : articulosCarrito) {
-                final Articulo articulo = daoarticulo.seleccionarArticulo(ac.getIdArticulo());
-                total = total + (ac.getCantidad() * articulo.getPrecio());
+            for (ArticuloCarrito ac : articulosCarrito) {
+                Articulo ar = daoart.seleccionarArticulo(ac.getIdArticulo());
+                total = total + (ac.getCantidad() * ar.getPrecio());
             }
 
-            daoventas.guardarVenta(1, total);
+            daoven.guardarVenta(1, total);
 
-            for (final ArticuloCarrito ac : articulosCarrito) {
-                daoventas.guardarVentaCantidad(daoventas.selectMaxIdVentas(), ac.getIdArticulo(), ac.getCantidad());
+            for (ArticuloCarrito ac : articulosCarrito) {
+                Articulo ar = daoart.seleccionarArticulo(ac.getIdArticulo());
+                daoven.guardarVentaCantidad(daoven.selectMaxIdVentas(), ac.getIdArticulo(), ac.getCantidad());
             }
             articulosCarrito.removeAll(articulosCarrito);
         }
         response.sendRedirect("index.htm");
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -64,7 +68,7 @@ public class Ventas extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(final HttpServletRequest request,final HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -78,7 +82,7 @@ public class Ventas extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(final HttpServletRequest request,final HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
