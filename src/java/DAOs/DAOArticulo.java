@@ -84,11 +84,7 @@ public class DAOArticulo {
         if (!recomendado) {
             sql = "select titulo,precio,foto,idArticulo,ISBN from articulo order by idArticulo asc";
         } else {
-            sql = "select DISTINCT a.titulo,a.precio,a.foto,a.idArticulo,ISBN \n"
-                    + "from articulo a inner join ventaproducto vp \n"
-                    + "on vp.idProducto=a.idArticulo \n"
-                    + "GROUP by vp.cantidad \n"
-                    + "order by idArticulo asc";
+            sql = "select DISTINCT a.titulo,a.precio,a.foto,a.idArticulo,a.ISBN from articulo a inner join ventaproducto vp on vp.idProducto=a.idArticulo GROUP by a.titulo order by count(a.titulo) DESC LIMIT 5";
         }
         return sql;
     }
